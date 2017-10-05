@@ -1,13 +1,15 @@
 var ship;
 var shipBeams = [];
 var BGimg;
+var frameCount = 0;
 function setup() {
   createCanvas(600, 600);
-  BGimg = loadImage('images/background.gif');
+  BGimg = loadGif('images/background.gif');
   ship = Ship();
 }
 
 function draw() {
+  frameCount++;
   background(BGimg);
   if(keyIsDown(RIGHT_ARROW)){
       moveShip(ship, 1, "horizontal");
@@ -28,6 +30,7 @@ function draw() {
   for(var i = shipBeams.length - 1; i >= 0; i--){
     moveBeam(shipBeams[i], -1);
     if (shouldDestructBeam(shipBeams[i])){
+      shipBeams[i].remove();
       shipBeams.splice(i, 1);
     }
   }

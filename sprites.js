@@ -1,6 +1,7 @@
 function Ship(num) {
 
   var img = loadImage('images/ship.png');
+  //var img = loadImage('images/playerShip2_blue.png');
   if(num != 2){
     var ship = createSprite(width/2, height - 40, 40, 24);
     ship.addImage(img);
@@ -43,6 +44,8 @@ function moveShip(ship, direction, horizontal_vertical) {
 
 function fireWeapon(ship){
   var beam = createSprite(ship.position.x, ship.position.y - 24, 5, 10);
+  var playerBeam = loadImage('images/laserBlue01.png');
+  beam.addImage(playerBeam);
   console.log('firing');
   return beam;
 }
