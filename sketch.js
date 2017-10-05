@@ -1,32 +1,52 @@
 var ship;
-
+var shipBeams = [];
+var BGimg;
 function setup() {
-  createCanvas(600, 400);
+  createCanvas(600, 600);
+  BGimg = loadImage('images/background.gif');
   ship = Ship();
-  ship2 = Ship(2);
 }
 
 function draw() {
-  background(0);
-  //ship.show();
-  //ship.move();
-  drawSprites();
-}
-
-function keyPressed(){
-  if(keyCode === RIGHT_ARROW){
-    console.log("RIGHT");
-    ship.xDir = 1;
-  } else if(keyCode === LEFT_ARROW){
-    console.log("LEFT");
-    ship.xDir = -1;
-  } else if(keyCode === ' '){
-    ship.shoot();
+  background(BGimg);
+  if(keyIsDown(RIGHT_ARROW)){
+      moveShip(ship, 1, "horizontal");
   }
+
+  if(keyIsDown(LEFT_ARROW)){
+    moveShip(ship, -1, "horizontal");
+  }
+
+  if(keyIsDown(UP_ARROW)){
+    moveShip(ship, -1, "vertical");
+  }
+
+  if(keyIsDown(DOWN_ARROW)){
+    moveShip(ship, 1, "vertical");
+  }
+
+  for(var i = shipBeams.length - 1; i >= 0; i--){
+    moveBeam(shipBeams[i], -1);
+    if (shouldDestructBeam(shipBeams[i])){
+      shipBeams.splice(i, 1);
+    }
+  }
+  checkBounds(ship);
+  drawSprites();
 }
 
 function keyReleased(){
   if(keyCode === RIGHT_ARROW || keyCode === LEFT_ARROW){
-    ship.xDir = 0;
+    moveShip(ship, 0, "horizontal");
+  }
+  if(keyCode === UP_ARROW || keyCode === DOWN_ARROW){
+    moveShip(ship, 0, "vertical");
+  }
+}
+
+function keyPressed(){
+  if(key === ' '){
+    var beam = fireWeapon(ship);
+    shipBeams.push(beam);
   }
 }
